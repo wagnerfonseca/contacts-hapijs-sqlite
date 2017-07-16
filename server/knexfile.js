@@ -21,7 +21,8 @@ module.exports = {
     },
     seeds: {
       directory: './db/seeds'
-    }
+    },
+    useNullAsDefault: false
   },
   staging: {
     client: 'postgresql',
@@ -58,4 +59,4 @@ module.exports = {
       directory: './db/migrations'
     }
   }
-};
+}

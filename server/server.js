@@ -1,42 +1,15 @@
-const Hapi = require('hapi')
-const server = new Hapi.Server();  
+const Hapi = require('hapi'),
+  config = require('./config/settings')
 
-server.connection({host: '0.0.0.0', port: 3000});
+var server = new Hapi.Server()  
 
-server.route({  
-  method: 'GET',
-  path: '/',
-  handler: function(request, reply) {
-      reply('Hello, world!');
-  }
+server.connection({host: '0.0.0.0', port: config.port})
+
+// add thye server routes
+server.route(require('./config/routes'))  
+
+server.start(() => {  
+  console.log('Server running at:', server.info.uri)
 })
 
-// configurando o banco de dados
-var knex = require('knex')({  
-  client: 'sqlite3',
-  connection: {
-      filename: "./dev.sqlite3"
-  },
-  useNullAsDefault: false
-})
-
-// ORM para Node.js
-var bookshelf = require('bookshelf')(knex);
-
-var Contact = bookshelf.Model.extend({  
-  tableName: 'contacts'
-})
-
-server.route({  
-  method: 'GET',
-  path: '/api/contacts',
-  handler: function(request, reply) {
-      Contact.fetchAll().then(function(contacts) {
-          reply('{"contacts:" ' + JSON.stringify(contacts) + '}');
-      });
-  }
-});
-
-server.start(function() {  
-  console.log('Server running at:', server.info.uri);
-})
+module.exports = server
