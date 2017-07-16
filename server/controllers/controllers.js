@@ -3,18 +3,19 @@ var models = require('../models/contacts'),
 
 module.exports = {  
   contacts: {
-    handler: function(request, reply) {
+    handler: (request, reply) => {
+      // http://bookshelfjs.org/#Model-subsection-methods
       models.Contact.fetchAll()
-        .then(function(contacts) {
+        .then((contacts) => {
           reply(utils.formatJson('contacts', contacts))
         })
     }
   },
   contact: {
-    handler: function(request, reply) {
+    handler: (request, reply) => {
       new models.Contact({id: request.params.id})
         .fetch()
-        .then(function(contact) {
+        .then((contact) => {
           reply(utils.formatJson('contacts', contacts))
         })
     }
