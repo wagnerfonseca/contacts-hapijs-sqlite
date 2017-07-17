@@ -28,24 +28,3 @@ after(function(done) {
     done()
   })
 })
-
-describe('Contacts', function() {  
-  it('should be return a lists all contacts', function(done) {  
-    var options = {
-      method: 'GET',
-      url: '/api/contacts'
-    }
-
-    server.inject(options, function(response) {
-      var result = response.result
-
-      expect(response.statusCode).to.equal(200)
-      var contacts = JSON.parse(result)
-      expect(contacts).to.be.instanceof(Object)
-      expect(contacts.contacts).to.be.instanceof(Array)
-      expect(contacts.contacts).to.have.length(2)
-
-      done()
-    })
-  })
-})

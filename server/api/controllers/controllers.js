@@ -16,7 +16,7 @@ module.exports = {
       new models.Contact({id: request.params.id})
         .fetch()
         .then((contact) => {
-          reply(utils.formatJson('contacts', contacts))
+          reply(utils.formatJson('contacts', contact))
         })
     }
   }
