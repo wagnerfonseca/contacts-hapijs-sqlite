@@ -2,10 +2,10 @@
   "name": "server",
   "version": "1.0.0",
   "description": "The REST API for contacts",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server"
+    "test": "./node_modules/.bin/lab -l -v -m 20000",
+    "start": "nodemon app"
   },
   "author": "Wagner Fonseca",
   "license": "ISC",

@@ -1,4 +1,4 @@
-var knexConfig = require('../knexfile') 
+var knexConfig = require('../../knexfile') 
 var settings = require('./settings')
 
 // Configuração do banco de dados - baseado no arquivo de configuracao do Knex
