@@ -1,4 +1,4 @@
-var models = require('../models/contacts'),
+var models = require('./contacts.model'),
   utils =require('../utils/utils')
 
 module.exports = {  
