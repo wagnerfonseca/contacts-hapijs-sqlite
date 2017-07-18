@@ -19,5 +19,14 @@ module.exports = {
           reply(utils.formatJson('contacts', contact))
         })
     }
+  },
+  contactCreate: {  
+    handler: function(request, reply) {
+      request.payload.contact.created_at = new Date()
+      request.payload.contact.updated_at = new Date()
+      new models.Contact(request.payload.contact).save().then(function(contact) {
+        reply(utils.formatJson('contact', contact))
+      })
+    }
   }
 }
