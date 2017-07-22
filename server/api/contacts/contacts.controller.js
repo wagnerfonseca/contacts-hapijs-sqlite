@@ -1,11 +1,11 @@
-var models = require('./contacts.model'),
-  utils =require('../utils/utils')
+var models = require('./contacts.model').Contact,
+  utils = require('../utils/utils')
 
 module.exports = {  
   contacts: {
     handler: (request, reply) => {
       // http://bookshelfjs.org/#Model-subsection-methods
-      models.Contact.fetchAll()
+      models.fetchAll()
         .then((contacts) => {
           reply(utils.formatJson('contacts', contacts))
         })
@@ -13,7 +13,7 @@ module.exports = {
   },
   contact: {
     handler: (request, reply) => {
-      new models.Contact({id: request.params.id})
+      new models({id: request.params.id})
         .fetch()
         .then((contact) => {
           reply(utils.formatJson('contacts', contact))
@@ -24,9 +24,27 @@ module.exports = {
     handler: function(request, reply) {
       request.payload.contact.created_at = new Date()
       request.payload.contact.updated_at = new Date()
-      new models.Contact(request.payload.contact).save().then(function(contact) {
+      new models(request.payload.contact).save().then(function(contact) {
         reply(utils.formatJson('contact', contact))
       })
+    }
+  },
+  contactUpdate: {
+    handler: function(request, reply) {
+      request.payload.contact.updated_at = new Date()
+      new models(request.payload.contact).save()
+        .then(function(contact) {
+          reply(utils.formatJson('contact', contact))
+        })
+    }
+  },
+  contactDelete: {
+    handler: function(request, reply) {
+      new models(request.params)
+        .destroy()
+        .then(function(contact) {
+          reply(JSON.stringify(contact))
+        })
     }
   }
 }

@@ -10,7 +10,6 @@ module.exports = {
   environment: process.env.NODE_ENV || 'development', 
   // We can use this to add options when constructing our Hapi server
   hapi: {
-    options: {
-    }
+    options: {}
   }
 } 
