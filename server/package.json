@@ -12,6 +12,7 @@
   "dependencies": {
     "bookshelf": "^0.10.3",
     "hapi": "^16.4.3",
+    "joi": "^10.6.0",
     "knex": "^0.13.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
