@@ -1,6 +1,6 @@
 const 
   models = require('./contacts.model').Contact,
-  validator = require('./contacts.validator'),
+  validator = require('./contacts.schema'),
   utils = require('../utils/utils')
 
 module.exports = {  
