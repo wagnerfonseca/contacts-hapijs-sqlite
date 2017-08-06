@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "./node_modules/.bin/lab -l -v -m 20000",
-    "start": "nodemon app"
+    "start": "nodemon app",
+    "build": "knex migrate:latest",
+    "seed": "knex seed:run"
   },
   "author": "Wagner Fonseca",
   "license": "ISC",

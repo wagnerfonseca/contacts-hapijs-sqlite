@@ -1,6 +1,6 @@
 describe('Contacts', function() {  
 
-  it('should be return a lists all contacts', function(done) {  
+  it('Return a lists all contacts', function(done) {  
     var options = {
       method: 'GET',
       url: '/api/contacts'
@@ -19,7 +19,7 @@ describe('Contacts', function() {
     })
   })
 
-  it('should be display a contact', function(done) {  
+  it('Display a contact', function(done) {  
     var options = {
       method: 'GET',
       url: '/api/contacts/1'
@@ -56,7 +56,7 @@ describe('Contacts', function() {
     }
   }
 
-  it('should create a contact', function(done) {  
+  it('Create a contact', function(done) {  
     var options = {
       method: 'POST',
       url: '/api/contacts',
@@ -109,7 +109,7 @@ describe('Contacts', function() {
     })
   })
 
-  it('should be update a contact', done => {
+  it('Update a contact', done => {
     // Modify some of the data on our contact
     localContact.contact['first_name'] = 'Billy'
     localContact.contact['last_name'] = 'Smith'
@@ -154,7 +154,7 @@ describe('Contacts', function() {
     )    
   }) 
 
-  it('should be delete a contact', done => {
+  it('Delete a contact', done => {
     let options = {
       method: 'DELETE',
       url: `/api/contacts/${localContact.contact.id}`,
@@ -187,4 +187,88 @@ describe('Contacts', function() {
     )
   })
 
+  it('Create a contact fail first_name min length validation', done => {
+    localContact.contact.first_name = 'J'
+
+    let options = {
+      method: 'POST',
+      url: '/api/contacts',
+      payload: JSON.stringify(localContact)
+    }
+
+    server.inject(
+      options, 
+      response => {
+        let result = response.result
+
+        expect(response.statusCode).to.equal(400)
+        expect(result.validation.keys[0]).to.equal('contact.first_name')
+
+        done()
+      }
+    )
+  })
+
+  it('Create a contact fail last_name required validation', done => {
+    localContact.contact.first_name = 'Jack'
+    localContact.contact.last_name = undefined
+
+    let options = {
+      method: 'POST',
+      url: '/api/contacts',
+      payload: JSON.stringify(localContact)
+    }
+
+    server.inject(options, response => {
+      let result = response.result
+
+      expect(response.statusCode).to.equal(400)
+      expect(result.validation.keys[0]).to.equal('contact.last_name')
+      
+      expect(result.message).to.contain('"last_name" is required')
+
+      done()
+    })
+  })
+
+  it('Create a contact fail middle_initial max length validation', done => {
+    localContact.contact.last_name = 'Johnson'
+    localContact.contact.middle_initial = 'Long'
+
+    let options = {
+      method: 'POST',
+      url: '/api/contacts',
+      payload: JSON.stringify(localContact)
+    }
+
+    server.inject(options, response => {
+      let result = response.result
+
+      expect(response.statusCode).to.equal(400)
+      expect(result.validation.keys[0]).to.equal('contact.middle_initial')
+
+      done()
+    })
+  })
+
+  it('Create a contact fail email format validation', done => {
+    localContact.contact.middle_initial = undefined
+    localContact.contact.email = 'invalidemail'
+
+    let options = {
+      method: 'POST',
+      url: '/api/contacts',
+      payload: JSON.stringify(localContact)
+    }
+
+    server.inject(options, response => {
+      let result = response.result
+
+      expect(response.statusCode).to.equal(400)
+      expect(result.validation.keys[0]).to.equal('contact.email')
+      expect(result.message).to.contain('"email" must be a valid email')
+
+      done()
+    })
+  })
 })
